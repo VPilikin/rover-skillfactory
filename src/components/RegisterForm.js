@@ -1,17 +1,19 @@
 import React, { useContext, useState } from 'react'
 import { Context } from '../index'
 import { observer } from 'mobx-react-lite'
-import { Link } from 'react-router-dom'
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+
   const { store } = useContext(Context)
   const [message, setMessage] = useState('')
 
-  async function handleLogin(e) {
+  async function handleRegistration(e) {
     e.preventDefault()
-    await store.login(email, password)
+    await store.registration(email, password, firstName, lastName)
     setMessage(store.message)
   }
 
@@ -45,26 +47,37 @@ const LoginForm = () => {
           aria-describedby="password"
         />
       </div>
+      <div className="input-group flex-nowrap">
+        <input
+          onChange={(e) => setFirstName(e.target.value)}
+          value={firstName}
+          type="text"
+          className="form-control"
+          placeholder="Имя"
+        />
+      </div>
+      <div className="input-group flex-nowrap">
+        <input
+          onChange={(e) => setLastName(e.target.value)}
+          value={lastName}
+          type="text"
+          className="form-control"
+          placeholder="Фамилия"
+        />
+      </div>
 
       <div className="container">
-        <Link to="/">
-          <button
-            onClick={handleLogin}
-            type="button"
-            className="btn btn-primary"
-          >
-            Логин
-          </button>
-        </Link>
-        <Link to="/registration">
-          <button type="button" className="btn btn-outline-primary">
-            Регистрация
-          </button>
-        </Link>
+        <button
+          onClick={handleRegistration}
+          type="button"
+          className="btn btn-primary"
+        >
+          Зарегистрироваться
+        </button>
+        <p className="container">{message}</p>
       </div>
-      <p className="container">{message}</p>
     </form>
   )
 }
 
-export default observer(LoginForm)
+export default observer(RegisterForm)

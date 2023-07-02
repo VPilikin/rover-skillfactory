@@ -1,10 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { Route, Routes, redirect } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
 import { Context } from './index'
 import { observer } from 'mobx-react-lite'
-import { IUser } from './models/IUser'
-import UserService from './services/UserService'
-import { AuthResponse } from './models/response/AuthResponse'
+import Header from './components/Header'
+import RegisterForm from './components/RegisterForm'
+import Main from './components/Main'
+import NewCase from './components/NewCase'
+import Cases from './components/Cases'
+import Case from './components/Case'
+import Officers from './components/Officers'
+import Officer from './components/Officer'
 
 function App() {
   const { store } = useContext(Context)
@@ -16,39 +22,31 @@ function App() {
     }
   }, [])
 
-  async function getOfficers() {
-    try {
-      const response = await UserService.fetchOfficers()
-      setOfficers(response.data.officers)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  if (store.isLoading) {
-    return <h1>Загрузка...</h1>
-  }
-  if (!store.isAuth) {
-    return (
-      <>
-        <LoginForm />
-      </>
-    )
-  }
+  console.log(store.isAuth)
   return (
     <div className="App">
-      <h1>
-        {store.isAuth
-          ? `Пользователь авторизован ${store.user.email}`
-          : 'Необходима авторизация'}
-      </h1>
-      <button onClick={() => store.logout()}>Выйти</button>
-      <div>
-        <button onClick={getOfficers}>Получить пользователей</button>
-      </div>
-      {officers.map((officer) => (
-        <div key={officer._id}>{officer.email}</div>
-      ))}
+      <Header />
+      {store.isLoading ? (
+        <div className="spinner-border" role="status">
+          <span className="sr-only"></span>
+        </div>
+      ) : store.isAuth ? (
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/newcase" element={<NewCase />} />
+          <Route path="/cases" element={<Cases />} />
+          <Route path="/cases/:id" element={<Case />} />
+          <Route path="/officers" element={<Officers />} />
+          <Route path="/officers/:id" element={<Officer />} />
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/newcase" element={<NewCase />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/registration" element={<RegisterForm />} />
+        </Routes>
+      )}
     </div>
   )
 }

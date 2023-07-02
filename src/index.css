@@ -1,0 +1,23 @@
+* {
+  text-align: center;
+}
+
+.container {
+  margin: 20px auto;
+  max-width: 720px;
+}
+.btn {
+  margin-left: 20px;
+}
+
+.input-group {
+  margin-bottom: 10px;
+}
+
+.spinner-border {
+  margin-top: 50px;
+}
+
+.btn-link {
+  cursor: pointer;
+}

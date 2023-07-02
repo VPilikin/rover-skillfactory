@@ -2,21 +2,20 @@ import React, { createContext } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import Store from './store/store'
-
-interface State {
-  store: Store
-}
-
+import './index.css'
+import { BrowserRouter } from 'react-router-dom'
 const store = new Store()
-export const Context = createContext<State>({
+export const Context = createContext({
   store,
 })
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
-    <Context.Provider value={{ store }}>
-      <App />
-    </Context.Provider>
+    <BrowserRouter>
+      <Context.Provider value={{ store }}>
+        <App />
+      </Context.Provider>
+    </BrowserRouter>
   </React.StrictMode>
 )
