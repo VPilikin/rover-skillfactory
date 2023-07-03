@@ -6,6 +6,16 @@
   margin: 20px auto;
   max-width: 720px;
 }
+
+.container-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-block {
+  margin-bottom: 20px;
+}
+
 .btn {
   margin-left: 20px;
 }

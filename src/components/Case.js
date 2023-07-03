@@ -6,21 +6,23 @@ const Case = () => {
   const id = useParams().id
   const [targetCase, setCase] = useState({})
   const [officers, setOfficers] = useState([])
+  const [message, setMessage] = useState('')
 
   async function getCase() {
     try {
       const response = await UserService.fetchCase(id)
       setCase(response.data.data)
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      setMessage(e.response.data.message)
     }
   }
+
   async function getOfficers() {
     try {
       const response = await UserService.fetchOfficers()
       setOfficers(response.data.officers)
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      setMessage(e.response.data.message)
     }
   }
 
@@ -30,12 +32,13 @@ const Case = () => {
   }, [])
 
   async function handleEditCase(e) {
+    setMessage('')
     e.preventDefault()
     try {
       const response = await UserService.editCase(id, targetCase)
-      console.log(response)
+      setMessage('Данные успешно отправлены')
     } catch (e) {
-      console.log(e)
+      setMessage(e.response.data.message)
     }
   }
 
@@ -212,6 +215,7 @@ const Case = () => {
       >
         Внести изменения
       </button>
+      <p>{message}</p>
     </div>
   )
 }

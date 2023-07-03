@@ -5,13 +5,14 @@ import { useParams } from 'react-router-dom'
 const Officer = () => {
   const id = useParams().id
   const [officer, setOfficer] = useState({})
+  const [message, setMessage] = useState('')
 
   async function getOfficer() {
     try {
       const response = await UserService.fetchOfficer(id)
       setOfficer(response.data.data)
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      setMessage(e.response.data.message)
     }
   }
 
@@ -20,6 +21,7 @@ const Officer = () => {
   }, [])
 
   async function handleEditOfficer(e) {
+    setMessage('')
     e.preventDefault()
     const data = {
       firstName: officer.firstName,
@@ -31,11 +33,11 @@ const Officer = () => {
     }
     try {
       const response = await UserService.editOfficer(id, data)
+      setMessage('Данные успешно отправлены')
     } catch (e) {
-      console.log(e)
+      setMessage(e.response.data.message)
     }
   }
-  console.log(officer)
 
   return (
     <div className="container">
@@ -95,19 +97,18 @@ const Officer = () => {
           />
         </div>
       </div>
-      <div class=" mb-3 btn-group">
+      <div className=" mb-3 btn-group">
         <input
           type="radio"
           className="btn-check"
           name="options-outlined"
           id="success-outlined"
-          autocomplete="off"
-          checked={true}
-          onClick={(e) => {
+          checked={officer.approved}
+          onChange={(e) => {
             setOfficer({ ...officer, approved: e.target.value === 'on' })
           }}
         />
-        <label class="btn btn-outline-success" for="success-outlined">
+        <label className="btn btn-outline-success" htmlFor="success-outlined">
           Одобрен
         </label>
 
@@ -116,13 +117,12 @@ const Officer = () => {
           className="btn-check"
           name="options-outlined"
           id="danger-outlined"
-          autocomplete="off"
           checked={!officer.approved}
-          onClick={(e) => {
+          onChange={(e) => {
             setOfficer({ ...officer, approved: e.target.value !== 'on' })
           }}
         />
-        <label class="btn btn-outline-danger" for="danger-outlined">
+        <label className="btn btn-outline-danger" htmlFor="danger-outlined">
           Не подтвержден
         </label>
       </div>
@@ -134,6 +134,7 @@ const Officer = () => {
           Внести изменения
         </button>
       </div>
+      <p>{message}</p>
     </div>
   )
 }
