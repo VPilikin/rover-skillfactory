@@ -31,7 +31,7 @@ export default class Store {
   async login(email, password) {
     try {
       const response = await AuthService.login(email, password)
-      console.log(`Ответ после логина`, response)
+
       localStorage.setItem('token', response.data.data.token)
 
       this.setAuth(true)
@@ -49,7 +49,6 @@ export default class Store {
         firstName,
         lastName
       )
-      console.log(`Ответ после регистрации`, response)
       this.login(email, password)
     } catch (e) {
       this.setMessage(e.response.data.message)
@@ -67,7 +66,6 @@ export default class Store {
     try {
       const response = await AuthService.checkAuth()
       localStorage.setItem('token', response.data.data.token)
-      console.log(`Ответ после аутентификации`, response)
       this.setAuth(true)
       this.setUser(response.data.data.user)
     } catch (e) {
@@ -97,7 +95,6 @@ export default class Store {
         officer
       )
       this.setMessage('Заявление отправлено')
-      console.log(`Ответ после отправки кейса`, response)
     } catch (e) {
       this.setMessage(e.response.data.message)
     }
@@ -121,7 +118,6 @@ export default class Store {
         description
       )
       this.setMessage('Заявление отправлено')
-      console.log(`Ответ после отправки паблик кейса`, response)
     } catch (e) {
       this.setMessage(e.response.data.message)
     }
