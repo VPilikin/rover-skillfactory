@@ -20,8 +20,6 @@ const Officers = () => {
     if (store.isAuth) getOfficers()
   }, [])
 
-  console.log(officers)
-
   return (
     <table className="table">
       <thead>

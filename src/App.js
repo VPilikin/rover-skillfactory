@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Route, Routes, redirect } from 'react-router-dom'
+import React, { useContext, useEffect } from 'react'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
 import { Context } from './index'
 import { observer } from 'mobx-react-lite'
@@ -14,7 +14,6 @@ import Officer from './components/Officer'
 
 function App() {
   const { store } = useContext(Context)
-  const [officers, setOfficers] = useState([])
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -22,7 +21,6 @@ function App() {
     }
   }, [])
 
-  console.log(store.isAuth)
   return (
     <div className="App">
       <Header />
@@ -38,6 +36,7 @@ function App() {
           <Route path="/cases/:id" element={<Case />} />
           <Route path="/officers" element={<Officers />} />
           <Route path="/officers/:id" element={<Officer />} />
+          <Route path="/*" element={<Navigate to="/" />} />
         </Routes>
       ) : (
         <Routes>
@@ -45,6 +44,7 @@ function App() {
           <Route path="/newcase" element={<NewCase />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/registration" element={<RegisterForm />} />
+          <Route path="/*" element={<Navigate to="/" />} />
         </Routes>
       )}
     </div>
